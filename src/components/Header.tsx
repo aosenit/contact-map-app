@@ -17,7 +17,7 @@ const Header = ({ setOpenNav }: Props) => {
       </h1>
 
       <AiOutlineMenu
-        className="text-2xl text-white absolute right-5 top-0"
+        className="text-2xl text-white absolute right-5 top-0 lg:hidden"
         onClick={() => setOpenNav(true)}
       />
     </div>

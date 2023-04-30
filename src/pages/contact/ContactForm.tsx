@@ -67,6 +67,7 @@ const ContactForm = () => {
             className="border-[1px] border-black p-2 w-full "
             value={data.firstName}
             onChange={onChange}
+            required
           />
         </div>
 
@@ -82,6 +83,7 @@ const ContactForm = () => {
             className="border-[1px] border-black p-2 w-full "
             value={data.lastName}
             onChange={onChange}
+            required
           />
         </div>
 
@@ -100,6 +102,7 @@ const ContactForm = () => {
                 checked={data.status === "active"}
                 onChange={onChange}
                 className="text-black"
+                required
               />
 
               <label htmlFor="status">Active</label>
@@ -113,6 +116,7 @@ const ContactForm = () => {
                 checked={data.status === "inactive"}
                 onChange={onChange}
                 className="text-black"
+                required
               />
 
               <label htmlFor="status">Inactive</label>
