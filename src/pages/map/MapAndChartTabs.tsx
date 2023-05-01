@@ -21,7 +21,7 @@ const MapAndChartTabs = ({
   const [tabValue, setTabValue] = useState(0);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full  px-2 lg:px-5">
       <div className="flex  space-x-4 mb-8 items-center ">
         <button
           className={`${

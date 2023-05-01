@@ -121,6 +121,7 @@ const Chart = ({
     <div className={"text-red-300"}>Can't fetch daily data</div>
   ) : dailyData.dateLabels ? (
     <Line
+      options={{ maintainAspectRatio: false }}
       data={{
         labels: dailyData?.dateLabels,
         datasets: [
@@ -159,6 +160,7 @@ const Chart = ({
         ],
       }}
       options={{
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             display: false,
@@ -176,7 +178,9 @@ const Chart = ({
   if (status === "error") console.log("An Error as occured. Please try again");
 
   return (
-    <div className={"flex justify-center w-full "}>
+    <div
+      className={"flex justify-center w-full relative h-[300px] lg:h-[60vh]"}
+    >
       {country !== "global" ? barChart : lineChart}
     </div>
   );

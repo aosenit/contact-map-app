@@ -12,7 +12,7 @@ const CountryPicker: FC<CountryPickerProps> = ({
 }) => {
   const [selectedCountry, setSelectedCountry] = useState("nigeria");
   return (
-    <div className="w-80 py-5">
+    <div className="w-80 py-5 px-2 lg:px-5">
       <select
         className="py-3 px-2 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
         value={selectedCountry}
