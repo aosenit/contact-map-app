@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import "leaflet/dist/leaflet.css";
 import Cards from "./ViewCard";
@@ -6,6 +6,7 @@ import CountryPicker from "./CountryPicker";
 import MapAndChartTabs from "./MapAndChartTabs";
 import { CountryType, MainDataType } from "../../utils/types";
 import { fetchCountries, fetchData } from "../../utils/api/Requests";
+import { useQuery } from "react-query";
 
 const View = () => {
   const [data, setData] = useState<MainDataType>({
@@ -18,58 +19,37 @@ const View = () => {
   const [countries, setCountries] = useState<Array<CountryType>>([]); //array of full countries data
   const [mapCenter, setMapCenter] = useState<[number, number]>([30, 15]);
   const [mapZoom, setMapZoom] = useState(2);
-  const [isError, setIsError] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    (async function () {
-      try {
-        const {
-          data: { cases, recovered, deaths, updated },
-        } = await fetchData("global");
-
-        setData({ cases, recovered, deaths, updated });
-      } catch (err) {
-        setIsError(true);
-        setErrorMessage("Can't fetch global data");
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    const fetchAPI = async () => {
-      try {
-        const fetchedData = await fetchCountries();
-
-        setCountries(fetchedData.data);
-      } catch (err) {
-        setIsError(true);
-        setErrorMessage("Can't fetch countries");
-      }
-    };
-
-    fetchAPI();
-  }, []);
-
-  const handleCountryChange = async (selectedCountry: string) => {
-    try {
-      const {
-        data: { cases, recovered, deaths, updated },
-      } = await fetchData(selectedCountry);
-
+  const { status } = useQuery({
+    queryKey: ["allCases", country],
+    queryFn: async () => {
+      const { data } = await fetchData(country);
+      const { cases, recovered, deaths, updated } = data;
       setData({ cases, recovered, deaths, updated });
-      setCountry(selectedCountry);
-    } catch (err) {
-      setIsError(true);
-      setErrorMessage(`Can't fetch ${selectedCountry} data`);
-    }
+      return data;
+    },
+  });
+
+  const { data: allCountries, status: countriesStatus } = useQuery({
+    queryKey: ["allCountries"],
+    queryFn: async () => {
+      const { data } = await fetchCountries();
+      setCountries(data);
+      return data;
+    },
+  });
+
+  if (status === "error" || countriesStatus === "error")
+    console.log("An Error as occured. Please try again");
+
+  const handleChangedCoutry = (selectedCountry: string) => {
+    setCountry(selectedCountry);
 
     if (selectedCountry === "global") {
       setMapCenter([30, 15]);
       setMapZoom(2);
     } else {
-      const foundCountry = countries.find(
+      const foundCountry = allCountries?.find(
         (country) => country.country === selectedCountry
       );
       foundCountry &&
@@ -81,9 +61,6 @@ const View = () => {
     }
   };
 
-  if (isError) {
-    console.log("An Error as occured. Please try again");
-  }
   return (
     <div className={"p-10"}>
       <p className={"text-2xl text-blue-600"}>Simple Covid-19 Dashboard</p>
@@ -91,7 +68,7 @@ const View = () => {
       <div className="mb-5">
         <CountryPicker
           countries={countries}
-          handleCountryChange={handleCountryChange}
+          handleChangedCoutry={handleChangedCoutry}
         />
       </div>
       <MapAndChartTabs

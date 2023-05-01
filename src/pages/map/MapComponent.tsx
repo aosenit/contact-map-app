@@ -46,7 +46,7 @@ function MapComponent({ countries, center, zoom }: MapProps) {
               <Popup>
                 <div className="">
                   <div
-                    className="h-[80px] w-full bg-cover rounded-r-md"
+                    className="h-[80px] w-full bg-contain bg-no-repeat rounded-r-md"
                     style={{
                       backgroundImage: `url(${country.countryInfo.flag})`,
                     }}

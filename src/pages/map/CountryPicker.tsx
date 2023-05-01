@@ -3,14 +3,14 @@ import { CountryType } from "../../utils/types";
 
 interface CountryPickerProps {
   countries: CountryType[];
-  handleCountryChange: any;
+  handleChangedCoutry: (selectedCountry: string) => void;
 }
 
 const CountryPicker: FC<CountryPickerProps> = ({
   countries,
-  handleCountryChange,
+  handleChangedCoutry,
 }) => {
-  const [selectedCountry, setSelectedCountry] = useState("global");
+  const [selectedCountry, setSelectedCountry] = useState("nigeria");
   return (
     <div className="w-80 py-5">
       <select
@@ -18,7 +18,7 @@ const CountryPicker: FC<CountryPickerProps> = ({
         value={selectedCountry}
         onChange={(e) => {
           setSelectedCountry(e.target.value);
-          handleCountryChange(e.target.value);
+          handleChangedCoutry(e.target.value);
         }}
       >
         <option value="global">Global</option>

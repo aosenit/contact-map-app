@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,6 +15,7 @@ import { Line, Bar } from "react-chartjs-2";
 
 import { DailyDataType, MainDataType } from "../../utils/types";
 import { fetchDailyData } from "../../utils/api/Requests";
+import { useQuery } from "react-query";
 
 ChartJS.register(
   CategoryScale,
@@ -60,7 +61,7 @@ const Chart = ({
 
     let prevDate: null | string = null;
 
-    for (let date in data.cases) {
+    for (let date in data?.cases) {
       if (!prevDate) {
         dateLabels.push(date);
         casesLine.push(0);
@@ -70,12 +71,12 @@ const Chart = ({
       }
 
       dateLabels.push(date);
-      casesLine.push(data.cases[date] - data.cases[prevDate]);
-      deathsLine.push(data.deaths[date] - data.deaths[prevDate]);
+      casesLine.push(data?.cases[date] - data?.cases[prevDate]);
+      deathsLine.push(data?.deaths[date] - data?.deaths[prevDate]);
       prevDate = date;
     }
 
-    for (let i = 6; i <= dateLabels.length; i++) {
+    for (let i = 6; i <= dateLabels?.length; i++) {
       weeklyAverageDateLabels.push(dateLabels[i]);
       weeklyAverageCasesLine.push(
         (casesLine[i] +
@@ -106,22 +107,22 @@ const Chart = ({
     };
   };
 
-  useEffect(() => {
-    const fetchAPI = async () => {
+  const { status } = useQuery({
+    queryKey: ["dailyData"],
+    queryFn: async () => {
       const { data } = await fetchDailyData();
       const builtData = buildDailyData(data);
       setDailyData(builtData);
-    };
-
-    fetchAPI();
-  }, []);
+      return data;
+    },
+  });
 
   const lineChart = !dailyData ? (
     <div className={"text-red-300"}>Can't fetch daily data</div>
   ) : dailyData.dateLabels ? (
     <Line
       data={{
-        labels: dailyData.dateLabels,
+        labels: dailyData?.dateLabels,
         datasets: [
           {
             data: dailyData.casesLine,
@@ -164,12 +165,15 @@ const Chart = ({
           },
           title: {
             display: true,
-            text: `Current state in ${country}`,
+            text: `Current Covid-19 state in ${country}`,
           },
         },
       }}
     />
   ) : null;
+
+  // if (status === "loading") return <>Loading...</>;
+  if (status === "error") console.log("An Error as occured. Please try again");
 
   return (
     <div className={"flex justify-center w-full "}>
