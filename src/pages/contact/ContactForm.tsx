@@ -34,9 +34,11 @@ const ContactForm = () => {
       dispatch(setOpenForm(false));
       dispatch(setEnableEdit(false));
       dispatch(editContact(data));
+      alert("Contact Edited Successfully");
       return;
     } else dispatch(setOpenForm(false));
     dispatch(addContact(data));
+    alert("Contact Created Successfully");
   };
 
   useEffect(() => {
@@ -50,11 +52,11 @@ const ContactForm = () => {
       className="flex flex-col h-full gap-5 items-center justify-center"
       onSubmit={submit}
     >
-      <h3 className="text-center text-xl">
+      <h3 className="text-center text-xl text-blue-500">
         {edit ? "Edit Contact Screen" : "Create Contact Screen"}
       </h3>
 
-      <div className="bg-white h-[50%] w-full lg:w-[70%] p-5 flex flex-col gap-5 justify-center">
+      <div className="bg-white h-[50%] w-full lg:w-[50%] p-5 lg:px-10 flex flex-col gap-5 justify-center">
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-5">
           <label htmlFor="firstName" className="w-fit whitespace-nowrap">
             First Name

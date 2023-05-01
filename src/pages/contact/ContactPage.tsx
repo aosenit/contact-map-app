@@ -19,6 +19,9 @@ const ContactPage = () => {
           Create Contact
         </button>
       </div>
+      <h3 className="text-xl text-blue-500 my-4 text-center">
+        {contacts.length > 0 && "My Contacts"}
+      </h3>
       <div className="">{contacts.length > 0 ? <Contacts /> : <Empty />}</div>
     </div>
   );
