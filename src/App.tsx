@@ -32,7 +32,7 @@ function App({ children }: any) {
       <div className="flex h-full">
         {openNav && (
           <aside className="bg-white absolute left-0 top-0 z-20 h-full w-full lg:top-[10vh] lg:sticky lg:w-[20%] lg:z-0">
-            <Aside setOpenNav={setOpenNav} />
+            <Aside setOpenNav={setOpenNav} isLargeScreen={isLargeScreen} />
           </aside>
         )}
         <main className="w-full lg:w-[80%] bg-gray-300 min-h-[90vh]">
