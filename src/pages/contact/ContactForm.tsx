@@ -12,6 +12,7 @@ import {
   setOpenForm,
 } from "../../utils/state/features/form/formSlice";
 import { RootState } from "../../utils/state/store";
+import { toast } from "react-toastify";
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -34,11 +35,15 @@ const ContactForm = () => {
       dispatch(setOpenForm(false));
       dispatch(setEnableEdit(false));
       dispatch(editContact(data));
-      alert("Contact Edited Successfully");
+      toast.success("Contact Edited Successfully!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
       return;
     } else dispatch(setOpenForm(false));
     dispatch(addContact(data));
-    alert("Contact Created Successfully");
+    toast.success("Contact Added Successfully!", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
   };
 
   useEffect(() => {

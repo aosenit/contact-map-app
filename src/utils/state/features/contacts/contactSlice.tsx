@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IContact } from "../../../types";
+import { toast } from "react-toastify";
 
 interface ContactsState {
   contacts: IContact[];
@@ -30,6 +31,12 @@ export const contactsSlice = createSlice({
       const { firstName, lastName } = action.payload;
       state.contacts = state.contacts.filter(
         (c) => c.firstName !== firstName || c.lastName !== lastName
+      );
+      toast.success(
+        `Contact of ${firstName} ${lastName} Deleted Successfully!`,
+        {
+          position: toast.POSITION.TOP_RIGHT,
+        }
       );
       localStorage.setItem("contacts", JSON.stringify(state.contacts));
     },

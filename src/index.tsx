@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "leaflet/dist/leaflet.css";
-
+import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./utils/state/store";
@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Contact from "./pages/contact";
 import Map from "./pages/map";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </Provider>
